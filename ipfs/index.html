@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset and Algorithm Selection</title>
+    <script>
+        // Function to send the selected dataset and algorithm to the backend
+        async function submitSelection() {
+            // Get the selected dataset and algorithm
+            const datasetCid = document.getElementById('datasetSelect').value;
+            const algorithmCid = document.getElementById('algorithmSelect').value;
+
+            const payload = {
+                datasetCid: datasetCid,
+                algorithm: algorithmCid,
+            };
+
+            try {
+                // Send the selection to the backend (Go server)
+                const response = await fetch('http://localhost:8080/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                // Parse the response
+                const data = await response.json();
+
+                // Handle response (e.g., display success or error message)
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to connect to backend.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Select Dataset and Algorithm</h1>
+    
+    <label for="datasetSelect">Select Dataset:</label>
+    <select id="datasetSelect">
+        <option value="QmSqgCYxgUeniGt6DUrXHBxY6SjDY9Xyw4Gy6t6i8XbhFY">Iris</option>
+        <option value="QmYwbrbrwnYMAAhB24MvsYgvV7rWJcCsg8Tg9VhdkNJtzL">Covtype</option>
+        <!-- Add more datasets here -->
+    </select>
+    <br><br>
+    
+    <label for="algorithmSelect">Select Algorithm:</label>
+    <select id="algorithmSelect">
+        <option value="QmYwbrbrwnYMAAhB24MvsYgvV7rWJcCsg8Tg9VhdkNJtzL">KNN</option>
+        <option value="QmSqgCYxgUeniGt6DUrXHBxY6SjDY9Xyw4Gy6t6i8XbhFY">LinReg</option>
+        <!-- Add more algorithms here -->
+    </select>
+    <br><br>
+    
+    <button onclick="submitSelection()">Submit</button>
+</body>
+</html>

@@ -1,27 +1,19 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const app = express();
-const port = 5000;
+app.use(cors());
+app.use(bodyParser.json());
 
-app.use(express.json());
+const blocks = [
+  { id: 1, timestamp: '2024-12-14', hash: '0x123abc...' },
+  { id: 2, timestamp: '2024-12-14', hash: '0x456def...' },
+];
 
-// Dummy data
-const dummyData = {
-  status: { blockCount: 123, transactionCount: 456 },
-  blocks: [{ id: 1, transactions: [{}, {}] }, { id: 2, transactions: [{}] }],
-  transactions: [{ sender: 'Alice', receiver: 'Bob', amount: 10 }],
-  wallet: { balance: 100, transactions: [{ amount: 10, date: '2024-12-12' }] },
-};
-
-app.get('/api/status', (req, res) => res.json(dummyData.status));
-app.get('/api/blocks', (req, res) => res.json({ blocks: dummyData.blocks }));
-app.get('/api/transactions', (req, res) => res.json({ transactions: dummyData.transactions }));
-app.get('/api/wallet', (req, res) => res.json(dummyData.wallet));
-
-app.post('/api/send-transaction', (req, res) => {
-  console.log(req.body); // Transaction details
-  res.json({ message: 'Transaction sent successfully!' });
+app.get('/api/blocks', (req, res) => {
+  res.json(blocks);
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+const PORT = 3001;
+app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));

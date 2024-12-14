@@ -4,21 +4,21 @@ function BlockExplorer() {
   const [blocks, setBlocks] = useState([]);
 
   useEffect(() => {
-    // Dummy backend API call for blocks
-    fetch('http://localhost:5000/api/blocks')  // Replace with actual endpoint
-      .then((res) => res.json())
-      .then((data) => setBlocks(data.blocks));
+    fetch('http://localhost:3001/api/blocks')
+      .then(response => response.json())
+      .then(data => setBlocks(data))
+      .catch(err => console.error('Error fetching blocks:', err));
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-4">Blockchain Explorer</h1>
-      <div className="space-y-4">
-        {blocks.map((block) => (
-          <div key={block.id} className="bg-white p-4 rounded-lg shadow-md">
-            <p><strong>Block ID:</strong> {block.id}</p>
-            <p><strong>Transactions:</strong> {block.transactions.length}</p>
-            <a href={`/block/${block.id}`} className="text-blue-500">View Block</a>
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Block Explorer</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {blocks.map(block => (
+          <div key={block.id} className="bg-gray-800 p-4 rounded shadow hover:shadow-lg transition-shadow">
+            <h3 className="font-bold text-lg">Block #{block.id}</h3>
+            <p className="text-sm text-gray-400">Timestamp: {block.timestamp}</p>
+            <p className="text-sm text-gray-400">Hash: {block.hash}</p>
           </div>
         ))}
       </div>
